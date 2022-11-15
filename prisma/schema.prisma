@@ -1,0 +1,25 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model gerente {
+  id       Int        @id @default(autoincrement())
+  analista analista[] @relation("gerente")
+  nome     String
+}
+
+model analista {
+  id            Int     @id @default(autoincrement())
+  email         String
+  especialidade String
+  gerente       gerente @relation("gerente", fields: [gerenteId], references: [id])
+  gerenteId     Int
+  nome          String
+}
